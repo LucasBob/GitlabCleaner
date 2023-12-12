@@ -49,6 +49,7 @@ Please see the below arguments table:
 | Argument                | Short | Long           | Description                                                            | Default Value |
 |-------------------------|-------|----------------|------------------------------------------------------------------------|---------------|
 | `project`               | `-p`  | `--project`    | The name of the project to search for.                                 |     |
+| `group`               | `-g`  | `--group`    | The name of the group in which to look for the prohect                                 |     |
 | `target`                | `-t`  | `--target`     | The target component(s) of the project to clean. For now, it can only be `jobs` | `jobs`        |
-| `expiration_in_days`    |       |                | The expiration date of the component(s) to clean (in days).            | `100`         |
+| `expiration_in_days`    |       |                | The expiration date of the component(s) to clean (in days).            | `365`         |
 

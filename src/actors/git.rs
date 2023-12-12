@@ -40,7 +40,10 @@ impl Default for Git {
 #[derive(Clone)]
 pub struct GetProject {
     /// The name of the project to search for.
-    pub project_name: String
+    pub project_name: String,
+
+    /// The group of the project to search for.
+    pub project_group: Option<String>
 }
 
 impl Message for GetProject {
@@ -55,9 +58,15 @@ impl Handler<Event, GetProject> for Git {
     async fn handle(&mut self, msg: GetProject, _ctx: &mut ActorContext<Event>) -> Result<u64, Error> {
         let client = reqwest::Client::new();
         let res = client
-            .get(format!("{}/projects", self.base_url))
+            .get(
+                if let Some(group) = msg.project_group {
+                    format!("{}/groups/{}/projects", self.base_url, group)
+                } else {
+                    format!("{}/projects", self.base_url)
+                }
+            )
             .header("PRIVATE-TOKEN", self.token.clone())
-            .query(&[("search", msg.project_name)])
+            .query(&[("search", msg.project_name), ("scope", "projects".to_string())])
             .send().await;
         match res {
             Ok(res) => {
@@ -71,7 +80,7 @@ impl Handler<Event, GetProject> for Git {
                         return Ok(projects[0].id);
                     },
                     _ => {
-                        return Err(Error::new(ErrorKind::Unsupported, "Multiple projects found that matches the researched term."));
+                        return Err(Error::new(ErrorKind::Unsupported, "Multiple projects found that matches the researched term. You might want to specify the group or add some more characters."));
                     }
                 }
             }
@@ -126,8 +135,9 @@ impl Handler<Event, GetJobs> for Git {
                     .get("x-next-page")
                     .and_then(|x| x.to_str().ok())
                     .and_then(|x| x.parse::<u64>().ok());
+                let jobs_to_erase = jobs.iter().filter(|job| job.created_at < msg.older_than && job.erased_at.is_none()).cloned().collect();
                 return Ok(GetJobsResponse {
-                    jobs,
+                    jobs: jobs_to_erase,
                     next_page
                 });
             }
