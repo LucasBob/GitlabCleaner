@@ -30,13 +30,17 @@ struct Args {
     #[arg(short, long)]
     project: String,
 
+    /// The group of the project to search for.
+    #[arg(short, long)]
+    group: Option<String>,
+
     /// The target component(s) of the project to clean.
     #[clap(value_enum)]
     #[arg(short, long, default_value = "jobs")]
     target: Target, 
 
     /// The expiration date of the component(s) to clean.
-    #[arg(value_parser = parse_duration, default_value = "100")]
+    #[arg(value_parser = parse_duration, default_value = "365")]
     expiration_in_days: std::time::Duration,
 }
 
@@ -55,6 +59,7 @@ async fn main() {
     // Getting the arguments from the CLI parser
     let args = Args::parse();
     let project_name = args.project;
+    let project_group = args.group;
     let expiration_date = chrono::Utc::now() - args.expiration_in_days;
 
     let displ = Displ::default();
@@ -63,7 +68,8 @@ async fn main() {
     let displ_ref = system.create_actor("displ-actor", displ).await.unwrap();
 
     let get_project_message = GetProject {
-        project_name: project_name.clone()
+        project_name: project_name.clone(),
+        project_group: project_group.clone()
     };
     
     // Better unwrap here to panic in case of error.
