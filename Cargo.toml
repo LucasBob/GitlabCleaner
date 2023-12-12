@@ -1,6 +1,6 @@
 [package]
 name = "gitlab-cleaner"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["Lucas <lucas@pixelized.studio>"]
 edition = "2021"
 
