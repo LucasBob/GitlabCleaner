@@ -1,5 +1,7 @@
 # GitLab Repo Cleaner
 
+[![Latest release](https://img.shields.io/github/v/release/LucasBob/GitlabCleaner)](https://github.com/LucasBob/GitlabCleaner/releases/latest) 
+
 ## Overview
 
 The GitLab Repo Cleaner is a command-line tool developed in Rust that utilizes the GitLab API to assist in cleaning up repositories. It is designed to simplify and automate the process of managing and maintaining GitLab repositories by performing various cleaning tasks.
@@ -22,7 +24,8 @@ The GitLab Repo Cleaner is a command-line tool developed in Rust that utilizes t
 
 ## Installation
 
-To install the GitLab Repo Cleaner, follow these steps:
+Either get the version that suits you here : [![Latest release](https://img.shields.io/github/v/release/LucasBob/GitlabCleaner)](https://github.com/LucasBob/GitlabCleaner/releases/latest) 
+Or build it for yourself (for fun or for contributing <3) by following the steps below:
 
 1. Ensure you have Rust installed. If not, install Rust using [rustup](https://rustup.rs/).
 2. Clone this repository: `git clone https://github.com/your_username/gitlab-repo-cleaner.git`
